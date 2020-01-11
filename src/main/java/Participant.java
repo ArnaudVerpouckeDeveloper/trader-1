@@ -23,4 +23,15 @@ public class Participant {
     public String toString() {
         return name+": "+balance;
     }
+
+    public void decreaseBalance(Integer amount) {
+        this.balance = this.balance - amount;
+        System.out.println(this.name + " lost " + amount + ". New balance is: " + this.balance + ". ");
+    }
+
+    public void increaseBalance(Integer amount) {
+        this.balance = this.balance + amount;
+        System.out.println(this.name + " received " + amount + ". New balance is: " + this.balance + ". ");
+    }
+
 }

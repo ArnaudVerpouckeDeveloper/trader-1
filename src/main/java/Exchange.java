@@ -54,9 +54,9 @@ public class Exchange extends Observable {
             try {
                 Integer orderId = 0;
                 while (runExchange) {
-                    placeOrder(new Order(Order.OrderType.values()[rand.nextInt(Order.OrderType.values().length)], rand.nextInt(3), rand.nextInt(10), getRandomParticipant(),orderId));
+                    placeOrder(new Order(Order.OrderType.values()[rand.nextInt(Order.OrderType.values().length)], rand.nextInt(5)+1, rand.nextInt(10), getRandomParticipant(),orderId));
                     orderId++;
-                    Thread.sleep(rand.nextInt(10) * 100);
+                    Thread.sleep(rand.nextInt(15) * 100);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -66,16 +66,18 @@ public class Exchange extends Observable {
     }
 
     public void placeOrder(Order order) {
-        if (order.getParticipant().getBalance() >= order.getLimit() * order.getAmount()) {
+        if (order.getParticipant().getBalance() >= order.getLimit() * order.getAmountOfTokens()) {
             System.out.println("Order accepted");
-            System.out.println("before:     "+orders);
             orders.add(order);
-            System.out.println("after:      "+orders);
             setChanged();
             notifyObservers();
         } else {
             System.out.println("Order canceled");
         }
+    }
+
+    public void removeOrder(Order order){
+        this.orders.remove(order);
     }
 
     @Override
