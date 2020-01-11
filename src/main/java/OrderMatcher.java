@@ -1,3 +1,4 @@
+import java.security.spec.ECField;
 import java.util.*;
 
 public class OrderMatcher implements Observer {
@@ -5,12 +6,9 @@ public class OrderMatcher implements Observer {
     List<Order> buyOrders;
     List<Order> sellOrders;
 
-    public OrderMatcher(Exchange exchange){
-        this.exchange = exchange;
-    }
-
     @Override
     public void update(Observable observable, Object arg) {
+        this.exchange = (Exchange) observable;
         buyOrders = new ArrayList<>();
         sellOrders = new ArrayList<>();
         for (Order order:exchange.getOrders()) {

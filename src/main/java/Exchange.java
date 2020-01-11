@@ -45,7 +45,7 @@ public class Exchange extends Observable {
     public void startExchange() {
         System.out.println("Starting exchange... \n\n");
         runExchange = true;
-        OrderMatcher orderMatcherTest = new OrderMatcher(this);
+        OrderMatcher orderMatcherTest = new OrderMatcher();
         addObserver(orderMatcherTest);
         //Thread orderMatcher = new Thread(new OrderMatcher (this));
 
