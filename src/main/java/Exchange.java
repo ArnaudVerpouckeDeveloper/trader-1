@@ -5,11 +5,6 @@ import java.util.Random;
 
 public class Exchange extends Observable {
     private List<Participant> participants = new ArrayList<>();
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
     private List<Order> orders = new ArrayList<>();
     private Boolean runExchange = false;
     public String exchangeName;
@@ -81,8 +76,6 @@ public class Exchange extends Observable {
         } else {
             System.out.println("Order canceled");
         }
-        //System.out.printf("\n");
-        //orders.add(order);
     }
 
     @Override
@@ -92,5 +85,8 @@ public class Exchange extends Observable {
 
     private Participant getRandomParticipant() {
         return participants.get(rand.nextInt(participants.size()));
+    }
+    public List<Order> getOrders() {
+        return orders;
     }
 }

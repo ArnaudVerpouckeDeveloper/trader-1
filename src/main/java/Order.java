@@ -1,14 +1,8 @@
 public class Order implements Comparable< Order >{
-    @Override
-    public int compareTo(Order order) {
-        return this.getLimit().compareTo(order.getLimit());
-    }
-
     enum OrderType{
         BUY,
         SELL
     }
-
     private Integer amount;
     private OrderType orderType;
     private Integer limit;
@@ -23,8 +17,6 @@ public class Order implements Comparable< Order >{
         this.id = id;
 
         System.out.println("Created: " + this.id + "-" + this.getLimit());
-
-        //System.out.println(toString());
     }
 
     public Integer getAmount() {
@@ -45,9 +37,13 @@ public class Order implements Comparable< Order >{
 
     @Override
     public String toString() {
-        //        return "@id:" + this.id + " " +this.participant.getName() + " - " +this.orderType + " | " + this.amount + " | " + "Limit " + this.limit + "";
+        //return "@id:" + this.id + " " +this.participant.getName() + " - " +this.orderType + " | " + this.amount + " | " + "Limit " + this.limit + "";
         //return "@id:" + this.id;
         return "@id:" + this.id + "-"+limit;
+    }
 
+    @Override
+    public int compareTo(Order order) {
+        return this.getLimit().compareTo(order.getLimit());
     }
 }
