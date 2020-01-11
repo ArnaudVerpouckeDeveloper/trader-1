@@ -1,9 +1,12 @@
+package main;
+
+import main.observable.Observable;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import java.util.Random;
 
-public class Exchange extends Observable {
+public class Exchange extends Observable<Exchange> {
     private List<Participant> participants = new ArrayList<>();
     private List<Order> orders = new ArrayList<>();
     private Boolean runExchange = false;
@@ -47,7 +50,6 @@ public class Exchange extends Observable {
         runExchange = true;
         OrderMatcher orderMatcherTest = new OrderMatcher();
         addObserver(orderMatcherTest);
-        //Thread orderMatcher = new Thread(new OrderMatcher (this));
 
 
         new Thread(() -> {
@@ -69,8 +71,7 @@ public class Exchange extends Observable {
         if (order.getParticipant().getBalance() >= order.getLimit() * order.getAmountOfTokens()) {
             System.out.println("Order accepted");
             orders.add(order);
-            setChanged();
-            notifyObservers();
+            notifyObservers(this);
         } else {
             System.out.println("Order canceled");
         }
@@ -90,5 +91,26 @@ public class Exchange extends Observable {
     }
     public List<Order> getOrders() {
         return orders;
+    }
+
+
+
+
+    public void buySellOrder(Order sellOrder, Order buyOrder) {
+        Integer transactionValue = buyOrder.getAmountOfTokens() * sellOrder.getLimit();
+        buyOrder.getParticipant().decreaseBalance(transactionValue);
+        sellOrder.getParticipant().increaseBalance(transactionValue);
+
+        if (sellOrder.getAmountOfTokens() - buyOrder.getAmountOfTokens() > 0) {
+            //There are still tokens for sale in the sellOrder
+            sellOrder.decreaseAmountOfTokens(buyOrder.getAmountOfTokens());
+            removeOrder(buyOrder);
+        } else {
+            //There are no tokens left for sale in the sellOrder
+            if (buyOrder.getAmountOfTokens() - sellOrder.getAmountOfTokens() > 0) {
+                buyOrder.decreaseAmountOfTokens(sellOrder.getAmountOfTokens());
+            }
+            removeOrder(sellOrder);
+        }
     }
 }
